@@ -16,9 +16,9 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Pillenkalender" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' width='36' he[...]
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' w[...]
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Pillenkalender%22%2C%22short_name%22%3A%22Pillenkalender%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%[...]
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Pillenkalender%22%2C%22short_name%22%3A%22Pillenkalender%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23101422%22%2C%22theme_color%22%3A%22%23101422%22%7D" />
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
@@ -44,6 +44,7 @@
 <script type="text/jsx-source" id="app-source">
 const { useState, useEffect, useRef, useMemo } = React;
 
+// ---------- tiny icon set (no external deps) ----------
 function Icon({ name, size = 18, color = "currentColor" }) {
   const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
   switch (name) {
@@ -53,7 +54,7 @@ function Icon({ name, size = 18, color = "currentColor" }) {
     case "check": return <svg {...common}><path d="M20 6 9 17l-5-5"/></svg>;
     case "x": return <svg {...common}><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg>;
     case "alert": return <svg {...common}><path d="M10.3 3.9 1.9 18a1.8 1.8 0 0 0 1.6 2.7h17a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>;
-    case "settings": return <svg {...common}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-1.5a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h1.5a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v1.5a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-1.5a1.7 1.7 0 0 0-1.5 1z"/></svg>;
+    case "settings": return <svg {...common}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>;
     case "chevronleft": return <svg {...common}><path d="M15 18l-6-6 6-6"/></svg>;
     case "chevronright": return <svg {...common}><path d="M9 18l6-6-6-6"/></svg>;
     case "shieldcheck": return <svg {...common}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></svg>;
@@ -63,6 +64,7 @@ function Icon({ name, size = 18, color = "currentColor" }) {
   }
 }
 
+// ---------- helpers ----------
 const pad = (n) => String(n).padStart(2, "0");
 const toKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 const keyToDate = (k) => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
@@ -159,7 +161,7 @@ const STATUS_COLORS = {
   late_ok: { bg: "#4D4420", ring: "#F2C25A", text: "#F2C25A" },
   late_risk: { bg: "#4D231F", ring: "#F2645A", text: "#F2645A" },
   missed: { bg: "#4D231F", ring: "#F2645A", text: "#F2645A" },
-  pause: { bg: "#4D204D", ring: "#E560E5", text: "#FFB3FF" },
+  pause: { bg: "#20263D", ring: "#4A5378", text: "#8B93AC" },
   future: { bg: "#161B2C", ring: "#2A3252", text: "#5B6488" },
   today_pending: { bg: "#20263D", ring: "#7FE7C4", text: "#7FE7C4" },
 };
@@ -358,7 +360,7 @@ function ActionButtons({ onTakenOnTime, onTakenLate }) {
       <button onClick={onTakenOnTime} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#7FE7C4", color: "#0E2A20" }}>
         <Icon name="check" size={16} /> Rechtzeitig genommen
       </button>
-      <button onClick={onTakenLate} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#F2645A", color: "#EDEFF7" }}>
+      <button onClick={onTakenLate} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#2A3252", color: "#EDEFF7" }}>
         <Icon name="alert" size={16} /> Nicht rechtzeitig
       </button>
     </div>
@@ -398,7 +400,7 @@ function PackWheel({ settings, days, todayKey, onSelectDay }) {
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#20263D" strokeWidth="1" />
         {items.map((it) => (
-          <circle key={it.k} onClick={() => onSelectDay(it.k)} style={{ cursor: "pointer" }} cx={it.x} cy={it.y} r={it.isToday ? 10 : 8} fill={it.c.bg} stroke={it.c.ring} strokeWidth={it.isToday ? 2.5 : 2} />
+          <circle key={it.k} onClick={() => onSelectDay(it.k)} style={{ cursor: "pointer" }} cx={it.x} cy={it.y} r={it.isToday ? 10 : 8} fill={it.c.bg} stroke={it.c.ring} strokeWidth={it.isToday ? 2.5 : 1.5} />
         ))}
         <text x={cx} y={cy - 6} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="20" fill="#EDEFF7">{centerLabel}</text>
         <text x={cx} y={cy + 16} textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="11" fill="#5B6488">{settings.intakeTime} Uhr</text>
@@ -407,7 +409,7 @@ function PackWheel({ settings, days, todayKey, onSelectDay }) {
         <Legend color="#7FE7C4" label="pünktlich" />
         <Legend color="#F2C25A" label="verspätet, geschützt" />
         <Legend color="#F2645A" label="Risiko / verpasst" />
-        <Legend color="#FFB3FF" label="Pause" />
+        <Legend color="#ffb3ff" label="Pause" />
       </div>
     </div>
   );
@@ -450,7 +452,7 @@ function MonthCalendar({ settings, days, viewMonth, setViewMonth, todayKey, onSe
           const c = STATUS_COLORS[colorKey] || STATUS_COLORS.future;
           const isToday = k === todayKey;
           return (
-            <button key={idx} onClick={() => onSelectDay(k)} className="font-mono" style={{ aspectRatio: "1", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 500, background: c.bg, border: `1.5px solid ${c.ring}`, color: c.text }}>
+            <button key={idx} onClick={() => onSelectDay(k)} className="font-mono" style={{ aspectRatio: "1", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, background: c.bg, color: c.text, border: isToday ? "1.5px solid #7FE7C4" : "1px solid transparent" }}>
               {d.getDate()}
             </button>
           );
@@ -476,17 +478,15 @@ function SettingsModal({ settings, onSave, onClose, onReset }) {
         <label style={{ fontSize: 12, color: "#8B93AC" }}>1. Tag der aktuellen Packung</label>
         <input type="date" value={local.startDate} onChange={(e) => setLocal({ ...local, startDate: e.target.value })} className="font-mono" style={fieldStyle} />
         <label style={{ fontSize: 12, color: "#8B93AC" }}>Schutz-Zeitfenster bei Verspätung (Stunden)</label>
-        <input type="number" min="1" max="24" value={local.protectionWindowHours} onChange={(e) => setLocal({ ...local, protectionWindowHours: Number(e.target.value) || 1 })} className="font-mono" style={fieldStyle} />
-        <div style={{ fontSize: 11, marginBottom: 16, lineHeight: 1.5, color: "#5B6488" }}>Richtwert, kein medizinischer Rat. Viele Kombinationspräparate gehen von ca. 12 Std. aus, manche Minipillen haben kürzere Fenster.</div>
+        <input type="number" min="1" max="24" value={local.protectionWindowHours} onChange={(e) => setLocal({ ...local, protectionWindowHours: Number(e.target.value) || 1 })} className="font-mono" style={{ ...fieldStyle, marginBottom: 4 }} />
+        <div style={{ fontSize: 11, marginBottom: 16, lineHeight: 1.5, color: "#5B6488" }}>Richtwert, kein medizinischer Rat. Viele Kombinationspräparate gehen von ca. 12 Std. aus, manche Minipillen von nur 3 Std. – prüfe deinen Beipackzettel.</div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <span style={{ fontSize: 14 }}>Erinnerungston</span>
-          <button onClick={() => setLocal({ ...local, soundOn: !local.soundOn })} style={{ borderRadius: 999, padding: "4px 12px", fontSize: 12, background: local.soundOn ? "#1F4D3D" : "#2A3252", color: local.soundOn ? "#7FE7C4" : "#8B93AC", fontWeight: 500 }}>
-            {local.soundOn ? "An" : "Aus"}
-          </button>
+          <button onClick={() => setLocal({ ...local, soundOn: !local.soundOn })} style={{ borderRadius: 999, padding: "4px 12px", fontSize: 12, background: local.soundOn ? "#1F4D3D" : "#2A3252", color: local.soundOn ? "#7FE7C4" : "#8B93AC" }}>{local.soundOn ? "An" : "Aus"}</button>
         </div>
         <button onClick={() => onSave(local)} style={{ width: "100%", borderRadius: 12, padding: 12, fontSize: 14, fontWeight: 500, marginBottom: 8, background: "#7FE7C4", color: "#0E2A20" }}>Speichern</button>
         <button onClick={onClose} style={{ width: "100%", borderRadius: 12, padding: 12, fontSize: 14, fontWeight: 500, marginBottom: 8, background: "#20263D", color: "#EDEFF7" }}>Abbrechen</button>
-        <button onClick={onReset} style={{ width: "100%", borderRadius: 12, padding: 10, fontSize: 12, fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: "#2A3252", color: "#8B93AC" }}>
+        <button onClick={onReset} style={{ width: "100%", borderRadius: 12, padding: 10, fontSize: 12, fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: "transparent", color: "#F2645A" }}>
           <Icon name="reset" size={13} /> Alle Daten zurücksetzen
         </button>
       </div>
@@ -538,6 +538,9 @@ root.render(<App />);
 </script>
 
 <script>
+  // Manuell übersetzen und ausführen, mit erzwungenem "classic" JSX-Modus,
+  // damit kein ES-Modul-Import (import ... from "react/jsx-runtime") entsteht,
+  // der ohne Bundler im Browser fehlschlagen würde.
   (function () {
     var src = document.getElementById("app-source").textContent;
     var output = Babel.transform(src, {
