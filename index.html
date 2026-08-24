@@ -7,23 +7,22 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
   }
-</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Pillenkalender</title>
-<meta name="theme-color" content="#101422" />
+<meta name="theme-color" content="#170F1A" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Pillenkalender" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101422'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Pillenkalender%22%2C%22short_name%22%3A%22Pillenkalender%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23101422%22%2C%22theme_color%22%3A%22%23101422%22%7D" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23170F1A'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23170F1A'/%3E%3Crect x='14' y='26' width='36' height='16' rx='8' fill='none' stroke='%237FE7C4' stroke-width='4'/%3E%3Cline x1='32' y1='26' x2='32' y2='42' stroke='%237FE7C4' stroke-width='4'/%3E%3C/svg%3E" />
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Pillenkalender%22%2C%22short_name%22%3A%22Pillenkalender%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23170F1A%22%2C%22theme_color%22%3A%22%23170F1A%22%7D" />
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
 <style>
-  html, body { margin: 0; padding: 0; background: #101422; }
+  html, body { margin: 0; padding: 0; background: #170F1A; }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     font-family: Inter, -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, sans-serif;
@@ -40,10 +39,10 @@
 </head>
 <body>
 <div id="root"></div>
-
+ 
 <script type="text/jsx-source" id="app-source">
 const { useState, useEffect, useRef, useMemo } = React;
-
+ 
 // ---------- tiny icon set (no external deps) ----------
 function Icon({ name, size = 18, color = "currentColor" }) {
   const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" };
@@ -63,7 +62,7 @@ function Icon({ name, size = 18, color = "currentColor" }) {
     default: return null;
   }
 }
-
+ 
 // ---------- helpers ----------
 const pad = (n) => String(n).padStart(2, "0");
 const toKey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -81,13 +80,13 @@ const fmtDuration = (ms) => {
   if (m > 0) return `${m} Min ${s} Sek`;
   return `${s} Sek`;
 };
-
+ 
 const PACK_PRESETS = {
   "21-7": { label: "21 aktiv / 7 Pause", active: 21, pause: 7 },
   "24-4": { label: "24 aktiv / 4 Pause", active: 24, pause: 4 },
   continuous: { label: "Durchgehend, keine Pause", active: 28, pause: 0 },
 };
-
+ 
 const DEFAULT_SETTINGS = {
   packType: "21-7",
   intakeTime: "20:00",
@@ -95,9 +94,9 @@ const DEFAULT_SETTINGS = {
   startDate: toKey(new Date()),
   soundOn: true,
 };
-
+ 
 const STORAGE_KEY = "pillentracker-state-v1";
-
+ 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -110,12 +109,12 @@ function saveState(state) {
 function clearState() {
   try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
 }
-
+ 
 function cycleLenOf(settings) {
   const p = PACK_PRESETS[settings.packType];
   return settings.packType === "continuous" ? p.active : p.active + p.pause;
 }
-
+ 
 function dayInfo(dateKey, settings) {
   const cur = startOfDay(keyToDate(dateKey));
   const start = startOfDay(keyToDate(settings.startDate));
@@ -127,14 +126,14 @@ function dayInfo(dateKey, settings) {
   const dayNum = isActive ? offset + 1 : offset - p.active + 1;
   return { isActive, dayNum, totalActive: p.active, totalPause: p.pause };
 }
-
+ 
 function scheduledDateTime(dateKey, intakeTime) {
   const [h, m] = intakeTime.split(":").map(Number);
   const d = keyToDate(dateKey);
   d.setHours(h, m, 0, 0);
   return d;
 }
-
+ 
 function playBeep() {
   try {
     const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -155,17 +154,17 @@ function playBeep() {
     setTimeout(() => ctx.close(), 1200);
   } catch (e) {}
 }
-
+ 
 const STATUS_COLORS = {
   ontime: { bg: "#1F4D3D", ring: "#7FE7C4", text: "#7FE7C4" },
   late_ok: { bg: "#4D4420", ring: "#F2C25A", text: "#F2C25A" },
   late_risk: { bg: "#4D231F", ring: "#F2645A", text: "#F2645A" },
   missed: { bg: "#4D231F", ring: "#F2645A", text: "#F2645A" },
-  pause: { bg: "#20263D", ring: "#4A5378", text: "#8B93AC" },
-  future: { bg: "#161B2C", ring: "#2A3252", text: "#5B6488" },
-  today_pending: { bg: "#20263D", ring: "#7FE7C4", text: "#7FE7C4" },
+  pause: { bg: "#4A1030", ring: "#FF6FB8", text: "#FF9BD1" },
+  future: { bg: "#241726", ring: "#4A2E42", text: "#8A6C82" },
+  today_pending: { bg: "#34222E", ring: "#7FE7C4", text: "#7FE7C4" },
 };
-
+ 
 function App() {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [days, setDays] = useState({});
@@ -176,7 +175,7 @@ function App() {
   const [lateModal, setLateModal] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const alarmFiredRef = useRef({});
-
+ 
   useEffect(() => {
     const saved = loadState();
     if (saved) {
@@ -188,22 +187,22 @@ function App() {
     }
     setLoaded(true);
   }, []);
-
+ 
   useEffect(() => {
     if (!loaded) return;
     saveState({ settings, days });
   }, [settings, days, loaded]);
-
+ 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
-
+ 
   const todayKey = toKey(now);
   const today = dayInfo(todayKey, settings);
   const todayEntry = days[todayKey];
   const scheduledToday = scheduledDateTime(todayKey, settings.intakeTime);
-
+ 
   useEffect(() => {
     if (!loaded || !today.isActive || todayEntry) return;
     if (now >= scheduledToday && !alarmFiredRef.current[todayKey]) {
@@ -215,9 +214,9 @@ function App() {
       if (secs > 0 && secs % 300 === 0 && settings.soundOn) playBeep();
     }
   }, [now, loaded, today.isActive, todayEntry, scheduledToday, todayKey, settings.soundOn]);
-
+ 
   const protectionMs = settings.protectionWindowHours * 3600000;
-
+ 
   const liveStatus = useMemo(() => {
     if (!today.isActive) return { kind: "pause" };
     if (todayEntry) return { kind: "done", entry: todayEntry };
@@ -226,7 +225,7 @@ function App() {
     if (overdue <= protectionMs) return { kind: "overdue_ok", msOverdue: overdue, msBuffer: protectionMs - overdue };
     return { kind: "overdue_risk", msUnprotected: overdue - protectionMs };
   }, [today.isActive, todayEntry, now, scheduledToday, protectionMs]);
-
+ 
   const markTaken = (dateKey, actualDate) => {
     const scheduled = scheduledDateTime(dateKey, settings.intakeTime);
     const delayMs = actualDate - scheduled;
@@ -237,7 +236,7 @@ function App() {
       [dateKey]: { status, scheduledAt: scheduled.toISOString(), takenAt: actualDate.toISOString(), delayMs, unprotectedMs },
     }));
   };
-
+ 
   const handleOnTime = () => markTaken(todayKey, now);
   const openLateModal = () => setLateModal({ dateKey: todayKey, timeStr: fmtHM(now) });
   const confirmLate = () => {
@@ -247,55 +246,55 @@ function App() {
     markTaken(lateModal.dateKey, actual);
     setLateModal(null);
   };
-
+ 
   const resetAll = () => { setDays({}); setSettings(DEFAULT_SETTINGS); clearState(); };
-
+ 
   if (!loaded) {
-    return <div style={{ background: "#101422", minHeight: 400, color: "#8B93AC" }} className="flex items-center justify-center text-sm">Lädt…</div>;
+    return <div style={{ background: "#170F1A", minHeight: 400, color: "#B79AB0" }} className="flex items-center justify-center text-sm">Lädt…</div>;
   }
-
+ 
   return (
-    <div style={{ background: "#101422", color: "#EDEFF7", minHeight: "100vh" }}>
+    <div style={{ background: "#170F1A", color: "#F5EDF3", minHeight: "100vh" }}>
       <style>{`.pulse-danger{animation:pulseRing 1.6s ease-in-out infinite}`}</style>
       <div style={{ maxWidth: 420, margin: "0 auto", padding: "24px 16px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
           <div>
-            <div className="font-display" style={{ fontSize: 18, color: "#EDEFF7" }}>Pillenkalender</div>
-            <div style={{ fontSize: 12, color: "#8B93AC" }}>{PACK_PRESETS[settings.packType].label}</div>
+            <div className="font-display" style={{ fontSize: 18, color: "#F5EDF3" }}>Pillenkalender</div>
+            <div style={{ fontSize: 12, color: "#B79AB0" }}>{PACK_PRESETS[settings.packType].label}</div>
           </div>
-          <button onClick={() => setShowSettings(true)} style={{ padding: 8, borderRadius: 999, background: "#1B2138" }} aria-label="Einstellungen">
-            <Icon name="settings" size={18} color="#8B93AC" />
+          <button onClick={() => setShowSettings(true)} style={{ padding: 8, borderRadius: 999, background: "#2A1B2C" }} aria-label="Einstellungen">
+            <Icon name="settings" size={18} color="#B79AB0" />
           </button>
         </div>
-
+ 
         <StatusBanner liveStatus={liveStatus} onTakenOnTime={handleOnTime} onTakenLate={openLateModal} />
         <PackWheel settings={settings} days={days} todayKey={todayKey} onSelectDay={setSelectedDay} />
         <MonthCalendar settings={settings} days={days} viewMonth={viewMonth} setViewMonth={setViewMonth} todayKey={todayKey} onSelectDay={setSelectedDay} />
-
-        <div style={{ fontSize: 12, marginTop: 24, lineHeight: 1.6, color: "#5B6488" }}>
+ 
+        <div style={{ fontSize: 12, marginTop: 24, lineHeight: 1.6, color: "#8A6C82" }}>
           Hinweis: Diese App ersetzt keine ärztliche Beratung. Das Schutz-Zeitfenster ist ein allgemeiner
           Richtwert – wie lange dein Präparat bei verspäteter Einnahme noch zuverlässig wirkt, hängt vom
           genauen Pillentyp ab. Sieh im Beipackzettel nach oder frag deine Ärztin/deinen Arzt bzw. deine Apotheke.
           Alle Daten bleiben ausschließlich auf diesem Gerät gespeichert.
         </div>
       </div>
-
+ 
       {showSettings && <SettingsModal settings={settings} onSave={(s) => { setSettings(s); setShowSettings(false); }} onClose={() => setShowSettings(false)} onReset={resetAll} />}
       {lateModal && <LateModal timeStr={lateModal.timeStr} onChange={(t) => setLateModal((p) => ({ ...p, timeStr: t }))} onConfirm={confirmLate} onCancel={() => setLateModal(null)} />}
       {selectedDay && <DayDetailModal dateKey={selectedDay} settings={settings} entry={days[selectedDay]} onClose={() => setSelectedDay(null)} />}
     </div>
   );
 }
-
+ 
 function StatusBanner({ liveStatus, onTakenOnTime, onTakenLate }) {
   if (liveStatus.kind === "pause") {
     return (
-      <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#1B2138", border: "1px solid #2A3252" }}>
+      <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#2A1B2C", border: "1px solid #4A2E42" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-          <Icon name="shieldcheck" size={18} color="#8B93AC" />
-          <span style={{ fontSize: 14, fontWeight: 500, color: "#8B93AC" }}>Pillenpause</span>
+          <Icon name="shieldcheck" size={18} color="#B79AB0" />
+          <span style={{ fontSize: 14, fontWeight: 500, color: "#B79AB0" }}>Pillenpause</span>
         </div>
-        <div style={{ fontSize: 14, color: "#5B6488" }}>Heute musst du keine Pille nehmen.</div>
+        <div style={{ fontSize: 14, color: "#8A6C82" }}>Heute musst du keine Pille nehmen.</div>
       </div>
     );
   }
@@ -318,12 +317,12 @@ function StatusBanner({ liveStatus, onTakenOnTime, onTakenLate }) {
   }
   if (liveStatus.kind === "waiting") {
     return (
-      <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#1B2138" }}>
+      <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#2A1B2C" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
           <Icon name="clock" size={18} color="#7FE7C4" />
           <span style={{ fontSize: 14, fontWeight: 500, color: "#7FE7C4" }}>Nächste Einnahme heute</span>
         </div>
-        <div className="font-mono" style={{ fontSize: 28, marginBottom: 16, color: "#EDEFF7" }}>in {fmtDuration(liveStatus.msUntil)}</div>
+        <div className="font-mono" style={{ fontSize: 28, marginBottom: 16, color: "#F5EDF3" }}>in {fmtDuration(liveStatus.msUntil)}</div>
         <ActionButtons onTakenOnTime={onTakenOnTime} onTakenLate={onTakenLate} />
       </div>
     );
@@ -335,7 +334,7 @@ function StatusBanner({ liveStatus, onTakenOnTime, onTakenLate }) {
           <Icon name="bellring" size={18} color="#F2C25A" />
           <span style={{ fontSize: 14, fontWeight: 500, color: "#F2C25A" }}>Überfällig, aber noch im Schutz-Zeitfenster</span>
         </div>
-        <div className="font-mono" style={{ fontSize: 22, marginBottom: 4, color: "#EDEFF7" }}>seit {fmtDuration(liveStatus.msOverdue)} überfällig</div>
+        <div className="font-mono" style={{ fontSize: 22, marginBottom: 4, color: "#F5EDF3" }}>seit {fmtDuration(liveStatus.msOverdue)} überfällig</div>
         <div style={{ fontSize: 14, marginBottom: 16, color: "#E8CE93" }}>Noch {fmtDuration(liveStatus.msBuffer)}, bevor der Schutz laut Einstellung wackelt.</div>
         <ActionButtons onTakenOnTime={onTakenOnTime} onTakenLate={onTakenLate} />
       </div>
@@ -347,26 +346,26 @@ function StatusBanner({ liveStatus, onTakenOnTime, onTakenLate }) {
         <Icon name="shieldoff" size={18} color="#F2645A" />
         <span style={{ fontSize: 14, fontWeight: 500, color: "#F2645A" }}>Kein sicherer Schutz mehr</span>
       </div>
-      <div className="font-mono" style={{ fontSize: 22, marginBottom: 4, color: "#EDEFF7" }}>ungeschützt seit {fmtDuration(liveStatus.msUnprotected)}</div>
+      <div className="font-mono" style={{ fontSize: 22, marginBottom: 4, color: "#F5EDF3" }}>ungeschützt seit {fmtDuration(liveStatus.msUnprotected)}</div>
       <div style={{ fontSize: 14, marginBottom: 16, color: "#F2C4BF" }}>Nimm die Pille jetzt und nutze zusätzliche Verhütung, bis der Schutz laut Beipackzettel wieder sicher ist.</div>
       <ActionButtons onTakenOnTime={onTakenOnTime} onTakenLate={onTakenLate} />
     </div>
   );
 }
-
+ 
 function ActionButtons({ onTakenOnTime, onTakenLate }) {
   return (
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
       <button onClick={onTakenOnTime} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#7FE7C4", color: "#0E2A20" }}>
         <Icon name="check" size={16} /> Rechtzeitig genommen
       </button>
-      <button onClick={onTakenLate} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#2A3252", color: "#EDEFF7" }}>
+      <button onClick={onTakenLate} style={{ borderRadius: 12, padding: "12px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontSize: 14, fontWeight: 500, background: "#4A2E42", color: "#F5EDF3" }}>
         <Icon name="alert" size={16} /> Nicht rechtzeitig
       </button>
     </div>
   );
 }
-
+ 
 function PackWheel({ settings, days, todayKey, onSelectDay }) {
   const cycleLen = cycleLenOf(settings);
   const startInfo = dayInfo(todayKey, settings);
@@ -375,7 +374,7 @@ function PackWheel({ settings, days, todayKey, onSelectDay }) {
   const offsetRaw = Math.round((cur - start) / 86400000);
   const cycleOffset = ((offsetRaw % cycleLen) + cycleLen) % cycleLen;
   const cycleStartDate = addDays(cur, -cycleOffset);
-
+ 
   const size = 280, cx = size / 2, cy = size / 2, r = size / 2 - 22;
   const items = [];
   for (let i = 0; i < cycleLen; i++) {
@@ -394,31 +393,31 @@ function PackWheel({ settings, days, todayKey, onSelectDay }) {
   }
   const p = PACK_PRESETS[settings.packType];
   const centerLabel = startInfo.isActive ? `Tag ${startInfo.dayNum} / ${p.active}` : `Pause ${startInfo.dayNum} / ${p.pause}`;
-
+ 
   return (
-    <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#161B2C", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ borderRadius: 16, padding: 20, marginBottom: 20, background: "#241726", display: "flex", flexDirection: "column", alignItems: "center" }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#20263D" strokeWidth="1" />
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#34222E" strokeWidth="1" />
         {items.map((it) => (
           <circle key={it.k} onClick={() => onSelectDay(it.k)} style={{ cursor: "pointer" }} cx={it.x} cy={it.y} r={it.isToday ? 10 : 8} fill={it.c.bg} stroke={it.c.ring} strokeWidth={it.isToday ? 2.5 : 1.5} />
         ))}
-        <text x={cx} y={cy - 6} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="20" fill="#EDEFF7">{centerLabel}</text>
-        <text x={cx} y={cy + 16} textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="11" fill="#5B6488">{settings.intakeTime} Uhr</text>
+        <text x={cx} y={cy - 6} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize="20" fill="#F5EDF3">{centerLabel}</text>
+        <text x={cx} y={cy + 16} textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="11" fill="#8A6C82">{settings.intakeTime} Uhr</text>
       </svg>
-      <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 12, flexWrap: "wrap", justifyContent: "center", color: "#8B93AC" }}>
+      <div style={{ display: "flex", gap: 16, marginTop: 8, fontSize: 12, flexWrap: "wrap", justifyContent: "center", color: "#B79AB0" }}>
         <Legend color="#7FE7C4" label="pünktlich" />
         <Legend color="#F2C25A" label="verspätet, geschützt" />
         <Legend color="#F2645A" label="Risiko / verpasst" />
-        <Legend color="#ffb3ff" label="Pause" />
+        <Legend color="#FF6FB8" label="Pause" />
       </div>
     </div>
   );
 }
-
+ 
 function Legend({ color, label }) {
   return <div style={{ display: "flex", alignItems: "center", gap: 6 }}><span style={{ width: 8, height: 8, borderRadius: 999, background: color, display: "inline-block" }} />{label}</div>;
 }
-
+ 
 function MonthCalendar({ settings, days, viewMonth, setViewMonth, todayKey, onSelectDay }) {
   const year = viewMonth.getFullYear(), month = viewMonth.getMonth();
   const first = new Date(year, month, 1);
@@ -428,16 +427,16 @@ function MonthCalendar({ settings, days, viewMonth, setViewMonth, todayKey, onSe
   for (let i = 0; i < startWeekday; i++) cells.push(null);
   for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
   const weekdayLabels = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-
+ 
   return (
-    <div style={{ borderRadius: 16, padding: 16, marginBottom: 20, background: "#161B2C" }}>
+    <div style={{ borderRadius: 16, padding: 16, marginBottom: 20, background: "#241726" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-        <button onClick={() => setViewMonth(new Date(year, month - 1, 1))} style={{ padding: 4, background: "transparent" }} aria-label="Vorheriger Monat"><Icon name="chevronleft" size={18} color="#8B93AC" /></button>
-        <div className="font-display" style={{ fontSize: 14, color: "#EDEFF7" }}>{viewMonth.toLocaleDateString("de-DE", { month: "long", year: "numeric" })}</div>
-        <button onClick={() => setViewMonth(new Date(year, month + 1, 1))} style={{ padding: 4, background: "transparent" }} aria-label="Nächster Monat"><Icon name="chevronright" size={18} color="#8B93AC" /></button>
+        <button onClick={() => setViewMonth(new Date(year, month - 1, 1))} style={{ padding: 4, background: "transparent" }} aria-label="Vorheriger Monat"><Icon name="chevronleft" size={18} color="#B79AB0" /></button>
+        <div className="font-display" style={{ fontSize: 14, color: "#F5EDF3" }}>{viewMonth.toLocaleDateString("de-DE", { month: "long", year: "numeric" })}</div>
+        <button onClick={() => setViewMonth(new Date(year, month + 1, 1))} style={{ padding: 4, background: "transparent" }} aria-label="Nächster Monat"><Icon name="chevronright" size={18} color="#B79AB0" /></button>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 4, textAlign: "center", marginBottom: 4 }}>
-        {weekdayLabels.map((w) => <div key={w} style={{ fontSize: 10, color: "#5B6488" }}>{w}</div>)}
+        {weekdayLabels.map((w) => <div key={w} style={{ fontSize: 10, color: "#8A6C82" }}>{w}</div>)}
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(7,1fr)", gap: 4 }}>
         {cells.map((d, idx) => {
@@ -461,31 +460,31 @@ function MonthCalendar({ settings, days, viewMonth, setViewMonth, todayKey, onSe
     </div>
   );
 }
-
+ 
 function SettingsModal({ settings, onSave, onClose, onReset }) {
   const [local, setLocal] = useState(settings);
-  const fieldStyle = { width: "100%", borderRadius: 10, padding: 10, marginTop: 4, marginBottom: 16, fontSize: 14, background: "#20263D", color: "#EDEFF7", border: "1px solid #2A3252" };
+  const fieldStyle = { width: "100%", borderRadius: 10, padding: 10, marginTop: 4, marginBottom: 16, fontSize: 14, background: "#34222E", color: "#F5EDF3", border: "1px solid #4A2E42" };
   return (
     <div style={{ position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: "rgba(8,10,18,0.7)", zIndex: 50 }}>
-      <div style={{ width: "100%", maxWidth: 380, borderRadius: 16, padding: 20, background: "#161B2C", color: "#EDEFF7", maxHeight: "90vh", overflowY: "auto" }}>
+      <div style={{ width: "100%", maxWidth: 380, borderRadius: 16, padding: 20, background: "#241726", color: "#F5EDF3", maxHeight: "90vh", overflowY: "auto" }}>
         <div className="font-display" style={{ fontSize: 16, marginBottom: 16 }}>Einstellungen</div>
-        <label style={{ fontSize: 12, color: "#8B93AC" }}>Art der Packung</label>
+        <label style={{ fontSize: 12, color: "#B79AB0" }}>Art der Packung</label>
         <select value={local.packType} onChange={(e) => setLocal({ ...local, packType: e.target.value })} style={fieldStyle}>
           {Object.entries(PACK_PRESETS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
-        <label style={{ fontSize: 12, color: "#8B93AC" }}>Uhrzeit der Einnahme</label>
+        <label style={{ fontSize: 12, color: "#B79AB0" }}>Uhrzeit der Einnahme</label>
         <input type="time" value={local.intakeTime} onChange={(e) => setLocal({ ...local, intakeTime: e.target.value })} className="font-mono" style={fieldStyle} />
-        <label style={{ fontSize: 12, color: "#8B93AC" }}>1. Tag der aktuellen Packung</label>
+        <label style={{ fontSize: 12, color: "#B79AB0" }}>1. Tag der aktuellen Packung</label>
         <input type="date" value={local.startDate} onChange={(e) => setLocal({ ...local, startDate: e.target.value })} className="font-mono" style={fieldStyle} />
-        <label style={{ fontSize: 12, color: "#8B93AC" }}>Schutz-Zeitfenster bei Verspätung (Stunden)</label>
+        <label style={{ fontSize: 12, color: "#B79AB0" }}>Schutz-Zeitfenster bei Verspätung (Stunden)</label>
         <input type="number" min="1" max="24" value={local.protectionWindowHours} onChange={(e) => setLocal({ ...local, protectionWindowHours: Number(e.target.value) || 1 })} className="font-mono" style={{ ...fieldStyle, marginBottom: 4 }} />
-        <div style={{ fontSize: 11, marginBottom: 16, lineHeight: 1.5, color: "#5B6488" }}>Richtwert, kein medizinischer Rat. Viele Kombinationspräparate gehen von ca. 12 Std. aus, manche Minipillen von nur 3 Std. – prüfe deinen Beipackzettel.</div>
+        <div style={{ fontSize: 11, marginBottom: 16, lineHeight: 1.5, color: "#8A6C82" }}>Richtwert, kein medizinischer Rat. Viele Kombinationspräparate gehen von ca. 12 Std. aus, manche Minipillen von nur 3 Std. – prüfe deinen Beipackzettel.</div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <span style={{ fontSize: 14 }}>Erinnerungston</span>
-          <button onClick={() => setLocal({ ...local, soundOn: !local.soundOn })} style={{ borderRadius: 999, padding: "4px 12px", fontSize: 12, background: local.soundOn ? "#1F4D3D" : "#2A3252", color: local.soundOn ? "#7FE7C4" : "#8B93AC" }}>{local.soundOn ? "An" : "Aus"}</button>
+          <button onClick={() => setLocal({ ...local, soundOn: !local.soundOn })} style={{ borderRadius: 999, padding: "4px 12px", fontSize: 12, background: local.soundOn ? "#1F4D3D" : "#4A2E42", color: local.soundOn ? "#7FE7C4" : "#B79AB0" }}>{local.soundOn ? "An" : "Aus"}</button>
         </div>
         <button onClick={() => onSave(local)} style={{ width: "100%", borderRadius: 12, padding: 12, fontSize: 14, fontWeight: 500, marginBottom: 8, background: "#7FE7C4", color: "#0E2A20" }}>Speichern</button>
-        <button onClick={onClose} style={{ width: "100%", borderRadius: 12, padding: 12, fontSize: 14, fontWeight: 500, marginBottom: 8, background: "#20263D", color: "#EDEFF7" }}>Abbrechen</button>
+        <button onClick={onClose} style={{ width: "100%", borderRadius: 12, padding: 12, fontSize: 14, fontWeight: 500, marginBottom: 8, background: "#34222E", color: "#F5EDF3" }}>Abbrechen</button>
         <button onClick={onReset} style={{ width: "100%", borderRadius: 12, padding: 10, fontSize: 12, fontWeight: 500, display: "flex", alignItems: "center", justifyContent: "center", gap: 6, background: "transparent", color: "#F2645A" }}>
           <Icon name="reset" size={13} /> Alle Daten zurücksetzen
         </button>
@@ -493,50 +492,50 @@ function SettingsModal({ settings, onSave, onClose, onReset }) {
     </div>
   );
 }
-
+ 
 function LateModal({ timeStr, onChange, onConfirm, onCancel }) {
   return (
     <div style={{ position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: "rgba(8,10,18,0.7)", zIndex: 50 }}>
-      <div style={{ width: "100%", maxWidth: 320, borderRadius: 16, padding: 20, background: "#161B2C", color: "#EDEFF7" }}>
+      <div style={{ width: "100%", maxWidth: 320, borderRadius: 16, padding: 20, background: "#241726", color: "#F5EDF3" }}>
         <div className="font-display" style={{ fontSize: 16, marginBottom: 4 }}>Wann eingenommen?</div>
-        <div style={{ fontSize: 12, marginBottom: 16, color: "#8B93AC" }}>Trag die tatsächliche Uhrzeit der Einnahme ein.</div>
-        <input type="time" value={timeStr} onChange={(e) => onChange(e.target.value)} className="font-mono" style={{ width: "100%", borderRadius: 10, padding: 10, marginBottom: 16, fontSize: 14, background: "#20263D", color: "#EDEFF7", border: "1px solid #2A3252" }} />
+        <div style={{ fontSize: 12, marginBottom: 16, color: "#B79AB0" }}>Trag die tatsächliche Uhrzeit der Einnahme ein.</div>
+        <input type="time" value={timeStr} onChange={(e) => onChange(e.target.value)} className="font-mono" style={{ width: "100%", borderRadius: 10, padding: 10, marginBottom: 16, fontSize: 14, background: "#34222E", color: "#F5EDF3", border: "1px solid #4A2E42" }} />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <button onClick={onCancel} style={{ borderRadius: 12, padding: 10, fontSize: 14, background: "#20263D", color: "#EDEFF7" }}>Abbrechen</button>
+          <button onClick={onCancel} style={{ borderRadius: 12, padding: 10, fontSize: 14, background: "#34222E", color: "#F5EDF3" }}>Abbrechen</button>
           <button onClick={onConfirm} style={{ borderRadius: 12, padding: 10, fontSize: 14, fontWeight: 500, background: "#7FE7C4", color: "#0E2A20" }}>Bestätigen</button>
         </div>
       </div>
     </div>
   );
 }
-
+ 
 function DayDetailModal({ dateKey, settings, entry, onClose }) {
   const info = dayInfo(dateKey, settings);
   const d = keyToDate(dateKey);
   return (
     <div style={{ position: "fixed", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: "rgba(8,10,18,0.7)", zIndex: 50 }} onClick={onClose}>
-      <div style={{ width: "100%", maxWidth: 320, borderRadius: 16, padding: 20, background: "#161B2C", color: "#EDEFF7" }} onClick={(e) => e.stopPropagation()}>
+      <div style={{ width: "100%", maxWidth: 320, borderRadius: 16, padding: 20, background: "#241726", color: "#F5EDF3" }} onClick={(e) => e.stopPropagation()}>
         <div className="font-display" style={{ fontSize: 16, marginBottom: 4 }}>{d.toLocaleDateString("de-DE", { weekday: "long", day: "2-digit", month: "long" })}</div>
-        <div style={{ fontSize: 12, marginBottom: 16, color: "#8B93AC" }}>{info.isActive ? `Tag ${info.dayNum} von ${info.totalActive}` : `Pause, Tag ${info.dayNum} von ${info.totalPause}`}</div>
-        {!info.isActive && <div style={{ fontSize: 14, color: "#8B93AC" }}>Keine Einnahme an diesem Tag vorgesehen.</div>}
-        {info.isActive && !entry && <div style={{ fontSize: 14, color: "#8B93AC" }}>Keine Eintragung vorhanden.</div>}
+        <div style={{ fontSize: 12, marginBottom: 16, color: "#B79AB0" }}>{info.isActive ? `Tag ${info.dayNum} von ${info.totalActive}` : `Pause, Tag ${info.dayNum} von ${info.totalPause}`}</div>
+        {!info.isActive && <div style={{ fontSize: 14, color: "#B79AB0" }}>Keine Einnahme an diesem Tag vorgesehen.</div>}
+        {info.isActive && !entry && <div style={{ fontSize: 14, color: "#B79AB0" }}>Keine Eintragung vorhanden.</div>}
         {info.isActive && entry && (
-          <div style={{ fontSize: 14, color: "#EDEFF7" }}>
+          <div style={{ fontSize: 14, color: "#F5EDF3" }}>
             <div>Geplant: {fmtHM(new Date(entry.scheduledAt))} Uhr</div>
             <div>Genommen: {fmtHM(new Date(entry.takenAt))} Uhr</div>
             {entry.unprotectedMs > 0 ? <div style={{ color: "#F2645A" }}>Ungeschützt: {fmtDuration(entry.unprotectedMs)}</div> : <div style={{ color: "#7FE7C4" }}>Schutz durchgehend gegeben</div>}
           </div>
         )}
-        <button onClick={onClose} style={{ width: "100%", borderRadius: 12, padding: 10, fontSize: 14, marginTop: 16, background: "#20263D", color: "#EDEFF7" }}>Schließen</button>
+        <button onClick={onClose} style={{ width: "100%", borderRadius: 12, padding: 10, fontSize: 14, marginTop: 16, background: "#34222E", color: "#F5EDF3" }}>Schließen</button>
       </div>
     </div>
   );
 }
-
+ 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 </script>
-
+ 
 <script>
   // Manuell übersetzen und ausführen, mit erzwungenem "classic" JSX-Modus,
   // damit kein ES-Modul-Import (import ... from "react/jsx-runtime") entsteht,
